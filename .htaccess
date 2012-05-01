@@ -1,0 +1,18 @@
+Options +FollowSymLinks
+Options -Indexes
+RewriteEngine On
+RewriteBase /
+
+#ignore real files
+RewriteCond %{REQUEST_FILENAME} -f [NC,OR]
+RewriteCond %{REQUEST_FILENAME} -d [NC]
+RewriteRule .* - [L]
+
+RewriteRule listen/([a-zA-Z0-9_-]+) /jPlayer/load_song.php?sid=$1 
+
+# do not allow viewing of .htaccess
+<Files .htaccess>
+order allow,deny
+deny from all
+</Files>
+ 
