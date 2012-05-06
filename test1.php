@@ -9,6 +9,7 @@ include($_SERVER['DOCUMENT_ROOT'] . '/globals/session.php');
 <title>Test Page 1</title>
 <link rel="stylesheet" type="text/css" href="jPlayer/skin/blue.monday/jplayer.blue.monday.css"/>
 <link rel="stylesheet" type="text/css" href="jPlayer/like/like.css"/>
+<link rel="stylesheet" type="text/css" href="test.css"/>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 <script type="text/javascript" src="jPlayer/js/jquery.jplayer.js"></script>
 <script type="text/javascript" src="jPlayer/js/jplayer.playlist.js"></script>
@@ -26,6 +27,15 @@ $().ready(function(){
 			tempFunction();
 		}
 	});
+	
+	$('#login_form').ajaxForm( { 
+	 		target: '#login_output'
+     }); 
+	 $('#logout_form').ajaxForm( { 
+	 		success: function() {
+				location.reload();	
+			}
+     }); 
 });
 
 <? // Function to check if the user is logged in ?>
@@ -43,45 +53,68 @@ function logged_in(formData, jqForm, options) {
 <body>
 	<? // HTML structure for jPlayer; actual playlist info will be dynamically loaded in ?>
 	<div id="jquery_jplayer_1" class="jp-jplayer"></div>
-		<div id="jp_container_1" class="jp-audio">
-			<div class="jp-type-playlist">
-				<div class="jp-gui jp-interface">
-					<ul class="jp-controls">
-						<li><a href="javascript:;" class="jp-previous" tabindex="1">previous</a></li>
-						<li><a href="javascript:;" class="jp-play" tabindex="1">play</a></li>
-						<li><a href="javascript:;" class="jp-pause" tabindex="1">pause</a></li>
-						<li><a href="javascript:;" class="jp-next" tabindex="1">next</a></li>
-						<li><a href="javascript:;" class="jp-mute" tabindex="1">mute</a></li>
-						<li><a href="javascript:;" class="jp-unmute" tabindex="1">unmute</a></li>
-					</ul>
-					<div class="jp-progress">
-						<div class="jp-seek-bar">
-							<div class="jp-play-bar"></div>
-						</div>
+	<div id="jp_container_1" class="jp-audio">
+		<div class="jp-type-playlist">
+			<div class="jp-gui jp-interface">
+				<ul class="jp-controls">
+					<li><a href="javascript:;" class="jp-previous" tabindex="1">previous</a></li>
+					<li><a href="javascript:;" class="jp-play" tabindex="1">play</a></li>
+					<li><a href="javascript:;" class="jp-pause" tabindex="1">pause</a></li>
+					<li><a href="javascript:;" class="jp-next" tabindex="1">next</a></li>
+					<li><a href="javascript:;" class="jp-mute" tabindex="1">mute</a></li>
+					<li><a href="javascript:;" class="jp-unmute" tabindex="1">unmute</a></li>
+				</ul>
+				<div class="jp-progress">
+					<div class="jp-seek-bar">
+						<div class="jp-play-bar"></div>
 					</div>
-					<div class="jp-volume-bar">
-						<div class="jp-volume-bar-value"></div>
-					</div>
-					<div class="jp-current-time"></div>
-					<div class="jp-duration"></div>
-                	<ul class="jp-toggles">
-						<li><a href="javascript:;" class="jp-shuffle" tabindex="1">shuffle</a></li>
-						<li><a href="javascript:;" class="jp-shuffle-off" tabindex="1">shuffle off</a></li>
-					</ul>
 				</div>
-				<div class="jp-playlist">
-					<ul>
-						<li></li>
-					</ul>
+				<div class="jp-volume-bar">
+					<div class="jp-volume-bar-value"></div>
 				</div>
-				<div class="jp-no-solution">
-					<span>Update Required</span>
-					To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
-				</div>
+				<div class="jp-current-time"></div>
+				<div class="jp-duration"></div>
+                <ul class="jp-toggles">
+					<li><a href="javascript:;" class="jp-shuffle" tabindex="1">shuffle</a></li>
+					<li><a href="javascript:;" class="jp-shuffle-off" tabindex="1">shuffle off</a></li>
+				</ul>
+			</div>
+			<div class="jp-playlist">
+				<ul>
+					<li></li>
+				</ul>
+			</div>
+			<div class="jp-no-solution">
+				<span>Update Required</span>
+				To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
+			</div>
 		</div>
 	</div>
 
 
+<? // Log in form if user is not logged in ?>
+
+<? if($_SESSION['id'] == null) { ?>
+<div id="login_output" class="output"></div>
+<form id="login_form" action="../globals/login.php" method="post">
+	<p>Email: <br /><input type="text" name="login_email" size="32" /></p>
+	<p>Password: <br /><input type="password" name="login_password" size="32" /></p>
+	<p><input type="submit" name="submit" value="Login" /></p>
+    
+</form>
+<? } ?>
+
+<? // User info if user is logged in ?>
+
+<? if($_SESSION['id']){ ?>
+
+	Hello <? echo $_SESSION['email']; ?>!
+    
+    <? // Logout form ?>
+    <form id="logout_form" method="post" action="../globals/logout.php"><input type="submit" name="submit" value="Logout" /></form></div> 
+    
+<? } ?>
 
 </body>
+
 </html>
