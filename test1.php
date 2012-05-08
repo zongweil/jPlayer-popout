@@ -7,27 +7,23 @@ include($_SERVER['DOCUMENT_ROOT'] . '/globals/session.php');
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Test Page 1</title>
-<link rel="stylesheet" type="text/css" href="jPlayer/skin/blue.monday/jplayer.blue.monday.css"/>
 <link rel="stylesheet" type="text/css" href="jPlayer/like/like.css"/>
 <link rel="stylesheet" type="text/css" href="test.css"/>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-<script type="text/javascript" src="jPlayer/js/jquery.jplayer.js"></script>
-<script type="text/javascript" src="jPlayer/js/jplayer.playlist.js"></script>
 <script type="text/javascript" src="globals/include/js/ajax_form/jquery.form.js"></script>
 <script type="text/javascript">
-<? // When the page is ready, load the playlist into jPlayer using AJAX ?>
 $().ready(function(){
-	$.ajax({
+	<? // Load song likes ?>
+	$.ajax( {
 		type: "POST",
-		url: "jPlayer/load_playlist.php",
+		url: '../../jPlayer/like/load_song_likes.php',
 		data: {location: 'test1'},
 		success: function(message) {
-			<? // Execute the resulting javascript code; avoid use of eval() ?>
-			var tempFunction = new Function(message);
-			tempFunction();
+        	<? // Execute the resulting javascript code; avoid use of eval() ?>
+			var tempFunction = new Function(message);	
+            tempFunction();				
 		}
 	});
-	
 	$('#login_form').ajaxForm( { 
 	 		target: '#login_output'
      }); 
@@ -51,45 +47,32 @@ function logged_in(formData, jqForm, options) {
 </head>
 
 <body>
-	<? // HTML structure for jPlayer; actual playlist info will be dynamically loaded in ?>
-	<div id="jquery_jplayer_1" class="jp-jplayer"></div>
-	<div id="jp_container_1" class="jp-audio">
-		<div class="jp-type-playlist">
-			<div class="jp-gui jp-interface">
-				<ul class="jp-controls">
-					<li><a href="javascript:;" class="jp-previous" tabindex="1">previous</a></li>
-					<li><a href="javascript:;" class="jp-play" tabindex="1">play</a></li>
-					<li><a href="javascript:;" class="jp-pause" tabindex="1">pause</a></li>
-					<li><a href="javascript:;" class="jp-next" tabindex="1">next</a></li>
-					<li><a href="javascript:;" class="jp-mute" tabindex="1">mute</a></li>
-					<li><a href="javascript:;" class="jp-unmute" tabindex="1">unmute</a></li>
-				</ul>
-				<div class="jp-progress">
-					<div class="jp-seek-bar">
-						<div class="jp-play-bar"></div>
-					</div>
-				</div>
-				<div class="jp-volume-bar">
-					<div class="jp-volume-bar-value"></div>
-				</div>
-				<div class="jp-current-time"></div>
-				<div class="jp-duration"></div>
-                <ul class="jp-toggles">
-					<li><a href="javascript:;" class="jp-shuffle" tabindex="1">shuffle</a></li>
-					<li><a href="javascript:;" class="jp-shuffle-off" tabindex="1">shuffle off</a></li>
-				</ul>
-			</div>
-			<div class="jp-playlist">
-				<ul>
-					<li></li>
-				</ul>
-			</div>
-			<div class="jp-no-solution">
-				<span>Update Required</span>
-				To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
-			</div>
-		</div>
-	</div>
+
+<ul class="song_table">
+	<? 
+	$songs_query = mysql_query("SELECT id, title, artist FROM songs WHERE artist='Miaow'");
+	while($row = mysql_fetch_array($songs_query))
+	{
+		$song_id = $row['id'];
+		$title = $row['title'];
+		$artist = $row['artist'];
+		?>
+        <li id="song-<? echo $song_id; ?>" class="song">
+        	<div class="title"><? echo $title; ?></div>
+            <div class="artist"><? echo $artist; ?></div>
+            <div class="play"></div>
+            <div class="queue"></div>
+            <div class="like">
+            	<form class='song-like song-like-<? echo $song_id; ?>' method='post' action='../../jPlayer/like/toggle_like.php'>
+                	<input type='hidden' name='post_id' value='<? echo $song_id; ?>' />
+                    <button type='submit' name='submit' class='song-like-submit song-like-button-<? echo $song_id; ?>'></button>
+                </form>
+            </div>
+        </li>
+        <?
+	}
+	?>
+</ul>	<? // Song table ul ?>
 
 
 <? // Log in form if user is not logged in ?>
