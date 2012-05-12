@@ -6,7 +6,7 @@ include($_SERVER['DOCUMENT_ROOT'] . '/globals/session.php');
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Test Page 1</title>
+<title>Test Page 2</title>
 <link rel="stylesheet" type="text/css" href="test.css"/>
 <link rel="stylesheet" type="text/css" href="jPlayer/like/like.css"/>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
@@ -152,10 +152,10 @@ function logged_in(formData, jqForm, options) {
 
 <body>
 
-<h2>Page 1</h2>
+<h2>Page 2</h2>
 <ul class="song_table">
 	<? 
-	$songs_query = mysql_query("SELECT id, title, artist FROM songs WHERE artist='Miaow'");
+	$songs_query = mysql_query("SELECT id, title, artist FROM songs WHERE artist='Classical Music'");
 	while($row = mysql_fetch_array($songs_query))
 	{
 		$song_id = $row['id'];
@@ -203,7 +203,7 @@ function logged_in(formData, jqForm, options) {
     
 <? } ?>
 
-<a href="test2.php">Navigate to another page</a>
+<a href="test1.php">Navigate to another page</a>
 
 </body>
 </html>

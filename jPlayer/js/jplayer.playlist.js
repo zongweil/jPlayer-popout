@@ -318,6 +318,20 @@
 				}
 			}
 		},
+		addStart: function(media, playNow) {
+			$(this.cssSelector.playlist + " ul").prepend(this._createListItem(media)).find("li:first-child").hide().slideDown(this.options.playlistOptions.addTime);
+			this._updateControls();
+			this.original=[media].concat(this.original);
+			this.playlist=[media].concat(this.playlist); // Both array elements share the same object pointer. Comforms with _initPlaylist(p) system.
+
+			if(playNow) {
+				this.play(0);
+			} else {
+				if(this.original.length === 1) {
+					this.select(0);
+				}
+			}
+		},
 		remove: function(index) {
 			var self = this;
 
