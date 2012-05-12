@@ -45,6 +45,7 @@ $().ready(function(){
 	$.ajax({
 		type: "POST",
 		url: "jPlayer/load_playlist.php",
+		data: {location: "test1"},
 		success: function(message) {
 			<? // Execute the resulting javascript code; avoid use of eval() ?>
 			var tempFunction = new Function(message);

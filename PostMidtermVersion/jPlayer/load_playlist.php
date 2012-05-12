@@ -2,6 +2,9 @@
 include($_SERVER['DOCUMENT_ROOT'] . '/globals/constants.php'); 
 include($_SERVER['DOCUMENT_ROOT'] . '/globals/session.php');
 
+$location = $_POST['location'];
+switch($location) {
+	case "test1":
 ?>
 myPlaylist1 = new jPlayerPlaylist({
 	jPlayer: "#jquery_jplayer_1",
@@ -41,3 +44,25 @@ myPlaylist1 = new jPlayerPlaylist({
 	    	myPlaylist1.play();
 		}
 	});
+	
+<?		break;
+	case "play";
+	case "queue";
+			$songID = $_POST['song'];
+			$song_query = mysql_query("SELECT id,title,artist FROM songs WHERE id='$songID'");
+			$row = mysql_fetch_array($song_query);
+			$song_id = $row['id'];
+			$title = $row['title'];
+			$artist = $row['artist'];
+?> 
+			myPlaylist1.add(
+					{
+						id:"<? echo $song_id; ?>",
+						title:"<? echo strtoupper($title); ?>",
+						artist:"<? echo $artist; ?>",					
+						mp3:"http://cs130.collegeroots.com/listen/<? echo $song_id; ?>/"
+					}, <? if ($location =="play"){	?> true <? } else { ?>false<? } ?>
+                  	  );	  
+<?		break;
+}
+?>
