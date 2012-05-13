@@ -3,6 +3,8 @@ include($_SERVER['DOCUMENT_ROOT'] . '/globals/constants.php');
 include($_SERVER['DOCUMENT_ROOT'] . '/globals/session.php');
 
 ?>
+
+<? if($_POST['location'] == "playlist") { ?>
 myPlaylist1 = new jPlayerPlaylist({
 	jPlayer: "#jquery_jplayer_1",
 	cssSelectorAncestor: "#jp_container_1"
@@ -41,3 +43,4 @@ myPlaylist1 = new jPlayerPlaylist({
 	    	myPlaylist1.play();
 		}
 	});
+    <? } ?>
