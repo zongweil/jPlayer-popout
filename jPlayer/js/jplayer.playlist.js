@@ -332,6 +332,21 @@
 				}
 			}
 		},
+		// ADDED
+		// Returns true if song with songID is true, otherwise return false.
+		contains: function(songID)
+		{
+			//alert("contains?");
+			for(key in this.original) {
+				if((this.original[key])['id'] == songID)
+				{
+					//alert("true");
+					return true;
+				}
+			}
+			//alert("false");
+			return false;
+		},
 		remove: function(index) {
 			var self = this;
 
