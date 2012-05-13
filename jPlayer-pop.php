@@ -45,6 +45,7 @@ $().ready(function(){
 	$.ajax({
 		type: "POST",
 		url: "jPlayer/load_playlist.php",
+		data: {location: "playlist"},
 		success: function(message) {
 			<? // Execute the resulting javascript code; avoid use of eval() ?>
 			var tempFunction = new Function(message);
@@ -64,11 +65,12 @@ function logged_in(formData, jqForm, options) {
 }
 
 <? // Adds the song, given the type and songID ?>
-function addSong(type , songID)
-{  	$.ajax({
+function addSong(type, songID)
+{  	
+	$.ajax({
 		type: "POST",
-		url: "jPlayer/load_playlist.php",
-		data: {location: type, song: songID},
+		url: "jPlayer/add_song.php",
+		data: {type: type, songID: songID},
 		success: function(message) {
 			<? // Execute the resulting javascript code; avoid use of eval() ?>
 			var tempFunction = new Function(message);
