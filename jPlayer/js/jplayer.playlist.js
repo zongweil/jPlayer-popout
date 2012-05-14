@@ -333,19 +333,19 @@
 			}
 		},
 		// ADDED
-		// Returns true if song with songID is true, otherwise return false.
-		contains: function(songID)
+		// Returns position of song if in playlist, otherwise return -1.
+		find: function(song)
 		{
-			//alert("contains?");
-			for(key in this.original) {
-				if((this.original[key])['id'] == songID)
+			//alert("find?");
+			for(key in this.playlist) {
+				if((this.playlist[key])['id'] == song)
 				{
-					//alert("true");
-					return true;
+					//alert(key);
+					return key;
 				}
 			}
-			//alert("false");
-			return false;
+			//alert("-1");
+			return -1;
 		},
 		remove: function(index) {
 			var self = this;
