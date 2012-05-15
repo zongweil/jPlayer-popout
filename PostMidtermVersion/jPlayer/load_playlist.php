@@ -4,7 +4,7 @@ include($_SERVER['DOCUMENT_ROOT'] . '/globals/session.php');
 
 $location = $_POST['location'];
 switch($location) {
-	case "test1":
+	case "playlist":
 ?>
 myPlaylist1 = new jPlayerPlaylist({
 	jPlayer: "#jquery_jplayer_1",
