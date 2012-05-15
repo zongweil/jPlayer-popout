@@ -242,11 +242,6 @@
 
 			// The title is given next in the HTML otherwise the float:right on the free media corrupts in IE6/7
 			listItem += "<a href='javascript:;' class='" + this.options.playlistOptions.itemClass + "' tabindex='1'>" + media.title + "</a>" + (media.artist ? " <span class='jp-artist'>" + media.artist + "</span>" : "");
-			listItem += "<span class='jp-like'> <div class='like'> " + 
-                            		"<form class='song-like song-like-" + media.id + "' method='post' action='../../jPlayer/like/toggle_like.php'>" + 
-                            		"<input type='hidden' name='post_id' value='" + media.id + "'/>" + 
-                            		"<button type='submit' name='submit' class='song-like-submit song-like-button-" + media.id + "'></button></form></div></span>";
-			listItem += "</div></li>";
 
 			return listItem;
 		},
