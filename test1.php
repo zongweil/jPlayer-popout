@@ -117,17 +117,6 @@ YUI({}).use("node-base", function (Y) {
 });
 
 $().ready(function(){
-	<? // Load song likes ?>
-	$.ajax( {
-		type: "POST",
-		url: '../../jPlayer/like/load_song_likes.php',
-		data: {location: 'test1'},
-		success: function(message) {
-        	<? // Execute the resulting javascript code; avoid use of eval() ?>
-			var tempFunction = new Function(message);	
-            tempFunction();				
-		}
-	});
 	$('#login_form').ajaxForm( { 
 	 		target: '#login_output'
      }); 
@@ -166,14 +155,7 @@ function logged_in(formData, jqForm, options) {
         	<div class="title" ><? echo $title; ?></div>
             <div class="artist"><? echo $artist; ?></div>
             <div class="play"></div> 
-            <div class="queue"></div>
-            <div class="like">
-            	<form class='song-like song-like-<? echo $song_id; ?>' method='post' action='../../jPlayer/like/toggle_like.php'>
-                	<input type='hidden' name='post_id' value='<? echo $song_id; ?>' />
-                    <button type='submit' name='submit' class='song-like-submit song-like-button-<? echo $song_id; ?>'></button>
-                </form>
-            </div>
-			
+            <div class="queue"></div>			
         </li>
         <?
 	}

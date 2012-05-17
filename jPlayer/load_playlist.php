@@ -27,18 +27,7 @@ myPlaylist1 = new jPlayerPlaylist({
 		supplied: "mp3",
 		wmode: "window",
 		solution: "flash, html",	<? // Flash with HTML5 fallback ?>
-        ready: function() {
-        	<? // Use AJAX to load song likes ?>
-			$.ajax({
-				type: "POST",
-				url: '../../jPlayer/like/load_song_likes.php',
-				data: {location: 'test1'},
-				success: function(message) {
-                	<? // Execute the resulting javascript code; avoid use of eval() ?>
-					var tempFunction = new Function(message);	
-                    tempFunction();				
-				}
-			});         
+        ready: function() { 
         	<? // Play the song once loaded ?>
 	    	myPlaylist1.play();
 		}
