@@ -8,13 +8,13 @@ while ($row = mysql_fetch_array($song_query)) {
 	$title = $row['title'];
 	$artist = $row['artist'];
 	?> 
-    myPlaylist1.add(
+    myPlaylist1.add( <?php //load_playlist.php'de initialize edildi.?>
     {
 		id:"<? echo $songID; ?>",
 		title:"<? echo strtoupper($title); ?>",
 		artist:"<? echo $artist; ?>",					
 		mp3:"http://cs130.collegeroots.com/listen/<? echo $songID; ?>/"
-	}, <? if ($type =="play"){	?> true <? } else { ?>false<? } ?>
+	}, <? if ($type =="play"){	?> true <? } else { ?>false<? } ?>  <?php //If type is quuee, set false, don't play?>
     ); 
 <? }
 ?>

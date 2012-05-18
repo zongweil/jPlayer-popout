@@ -218,7 +218,7 @@
 			var self = this;
 
 			// Wrap the <li> contents in a <div>
-			var listItem = "<li><div>";
+			var listItem = "<li id='"+media.id+"'><div>";
 
 			// Create remove control
 			listItem += "<a href='javascript:;' class='" + this.options.playlistOptions.removeItemClass + "'>&times;</a>";
@@ -430,6 +430,33 @@
 			if(this.loop && this.options.playlistOptions.loopOnPrevious || index < this.playlist.length - 1) {
 				this.play(index);
 			}
+		},
+		updateDragDropList: function(old_index, new_index, old_playlist, new_playlist) {
+			var temp, searchkey, i, j;
+			for(i=0; i<old_playlist.length; i++)
+			{
+				if(old_playlist[i] != new_playlist[i] && old_playlist[i] != -1 && new_playlist[i] != -1)
+				{
+					searchkey = old_playlist[i];
+					for(j=0; j<new_playlist.length; j++)
+					{
+						if(new_playlist[j] == searchkey)
+						{
+							old_playlist[i] = -1;
+
+							new_playlist[j] = -1;
+							break;
+						}
+					}
+					temp = this.playlist[i];
+					this.playlist[i] = this.playlist[j];
+					this.playlist[j] = temp;
+				}
+			
+			}
+			
+			this.current=new_index; //Update currently playing song, if it has changed
+			alert("Now current array index set to"+this.current);
 		},
 		shuffle: function(shuffled, playNow) {
 			var self = this;

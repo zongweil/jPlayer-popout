@@ -12,9 +12,13 @@ include($_SERVER['DOCUMENT_ROOT'] . '/globals/session.php');
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 <script type="text/javascript" src="jPlayer/js/jquery.jplayer.js"></script>
 <script type="text/javascript" src="jPlayer/js/jplayer.playlist.js"></script>
+<script type="text/javascript" src="jPlayer/dragdrop/jquery-ui-1.8.20.custom.min.js"></script>
 <script type="text/javascript" src="globals/include/js/ajax_form/jquery.form.js"></script>
 <script type="text/javascript" src="http://yui.yahooapis.com/3.3.0/build/yui/yui-min.js"></script>
 <script type="text/javascript">
+var old_index=0, new_index=0;
+var old_array, new_array; //arrats of songid's before and after the dragdrop done.
+
 YUI().use("node-base", function (Y) {
     var _openerUrl = window.opener.location.href;
 
@@ -78,6 +82,31 @@ function addSong(type, songID)
 		}
 	});
 }
+
+$(function() {
+	$( "#sortable" ).sortable();
+	$( "#sortable" ).disableSelection();
+	$( "#sortable" ).bind("sortstop", function(event, ui) {
+		
+		new_index = $("#nested_2 ul li.jp-playlist-current").index();
+		new_array = $( "#sortable" ).sortable('toArray');
+		myPlaylist1.updateDragDropList(old_index, new_index, old_array, new_array);		
+	});
+});
+
+
+
+
+
+
+function findOldIndexCurrent()
+{
+	old_array = $( "#sortable" ).sortable('toArray');
+	old_index = $("#nested_2 ul li.jp-playlist-current").index();	
+}
+
+
+
 </script>
 </head>
 
@@ -87,7 +116,7 @@ function addSong(type, songID)
 
 <div id="jquery_jplayer_1" class="jp-jplayer"></div>
 <div id="jp_container_1" class="jp-audio">
-	<div class="jp-type-playlist">
+	<div id="nested_1" class="jp-type-playlist">
 		<div class="jp-gui jp-interface">
 			<ul class="jp-controls">
 				<li><a href="javascript:;" class="jp-previous" tabindex="1">previous</a></li>
@@ -112,8 +141,8 @@ function addSong(type, songID)
 				<li><a href="javascript:;" class="jp-shuffle-off" tabindex="1">shuffle off</a></li>
 			</ul>
 		</div>
-		<div class="jp-playlist">
-			<ul>
+		<div id="nested_2"  class="jp-playlist">
+			<ul id="sortable" onmousedown="findOldIndexCurrent()" ">
 				<li></li>
 			</ul>
 		</div>
