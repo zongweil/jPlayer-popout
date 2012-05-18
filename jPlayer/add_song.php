@@ -9,7 +9,8 @@ while ($row = mysql_fetch_array($song_query)) {
 	$artist = $row['artist'];
 	?> 
 	pos = myPlaylist1.find(<? echo $songID; ?>);
-	if(pos == -1) {
+
+	if(parseInt(pos) == -1) {
 		myPlaylist1.add(
 		{
 			id:"<? echo $songID; ?>",
@@ -21,7 +22,7 @@ while ($row = mysql_fetch_array($song_query)) {
 	}
 	else {
 		<? if ($type =="play"){	?>
-		myPlaylist1.play(pos);
+		myPlaylist1.play(parseInt(pos));
 		<? } ?>
 	}
 <? }
