@@ -447,10 +447,18 @@
 			}
 		},
 		updateDragDropList: function(old_index, new_index, old_playlist, new_playlist) {
-			var temp, searchkey, i, j;
+			var temp_playlist = new Array();
+			var searchkey, i, j;
 			for(i=0; i<old_playlist.length; i++)
 			{
-				if(old_playlist[i] != new_playlist[i] && old_playlist[i] != -1 && new_playlist[i] != -1)
+				for(j=0; j<new_playlist.length; j++)
+				{
+					if(old_playlist[i] == new_playlist[j])
+					{
+						temp_playlist[j] = this.playlist[i]; 
+						break;
+					}
+				/*if(old_playlist[i] != new_playlist[i] && old_playlist[i] != -1)
 				{
 					searchkey = old_playlist[i];
 					for(j=0; j<new_playlist.length; j++)
@@ -460,18 +468,22 @@
 							old_playlist[i] = -1;
 
 							new_playlist[j] = -1;
+							if(old_playlist[j] == new_playlist[i] && old_playlist[j] != -1)
+								old_playlist[j] = -1;
 							break;
 						}
 					}
-					temp = this.playlist[i];
-					this.playlist[i] = this.playlist[j];
-					this.playlist[j] = temp;
+					temp = this.playlist[j];
+					this.playlist[j] = this.playlist[i];
+					this.playlist[i] = temp;
+				}*/
+			
 				}
-			
 			}
-			
+			this.playlist = temp_playlist.slice(0);
 			this.current=new_index; //Update currently playing song, if it has changed
-			alert("Now current array index set to"+this.current);
+			//alert("Now current array index set to"+this.current);
+			
 		},
 		shuffle: function(shuffled, playNow) {
 			var self = this;
