@@ -327,6 +327,21 @@
 				}
 			}
 		},
+		// ADDED
+		// Returns position of song if in playlist, otherwise return -1.
+		find: function(song)
+		{
+			//alert("find?");
+			for(key in this.playlist) {
+				if((this.playlist[key])['id'] == song)
+				{
+					//alert(key);
+					return key;
+				}
+			}
+			//alert("-1");
+			return -1;
+		},
 		remove: function(index) {
 			var self = this;
 
