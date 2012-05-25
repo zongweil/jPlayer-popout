@@ -1,9 +1,8 @@
 /* Song table CSS */
 .song_table{width:370px;height:350px;border:1px solid #666;font-family:Helvetica, Arial, "Lucida Grande", sans-serif;overflow-y:auto;overflow-x:hidden;list-style-type:none;padding:0;margin:0;}
 .song_table .song{width:370px;height:34px;border-bottom:1px solid #999;position:relative;}
-.song_table .song .title{font-size:11px;color:#3C577C;width:200px;position:absolute;left:10px;top:5px;}
+.song_table .song .title{font-size:11px;color:#3C577C;width:200px;position:absolute;left:10px;top:5px;cursor:pointer;}
 .song_table .song .artist{font-size:10px;color:#666;width:200px;position:absolute;left:10px;bottom:3px;}
-.song_table .song .play{width:36px;height:24px;border:none;position:absolute;left:220px;top:5px;cursor:pointer;background-image:url('globals/icons/play.png');}
 .song_table .song .queue{width:36px;height:24px;border:none;position:absolute;left:260px;top:5px;cursor:pointer;background-image:url('globals/icons/queue.png');}
 .song_table .song .like{position:absolute;left:300px;top:9px;}
 

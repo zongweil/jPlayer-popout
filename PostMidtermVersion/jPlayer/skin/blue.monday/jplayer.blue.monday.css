@@ -120,7 +120,6 @@ div.jp-interface ul.jp-controls a {
 }
 a.jp-play,
 a.jp-pause,
-/*a.jp-like,*/
 a.jp-previous,
 a.jp-next,
 a.jp-stop {
@@ -143,17 +142,6 @@ a.jp-pause {
 a.jp-pause:hover {
 	background: url("cr_buttons.png") -201px -89px no-repeat;
 }
-
-/*a.jp-like {
-	background: url("cr_buttons.png") -105px -9px no-repeat;
-}
-a.jp-like:hover {
-	background: url("cr_buttons.png") -105px -89px no-repeat;
-}
-
-a.jp-like-pressed {
-	background: url("cr_buttons.png") -105px -89px no-repeat;
-}*/
 
 a.jp-stop {
 	background: url("jplayer.blue.monday.jpg") 0 -83px no-repeat;
@@ -351,7 +339,7 @@ div.jp-title ul,
 div.jp-playlist ul {
 	list-style-type:none;
 	margin:0;
-	padding:0 45px 0 20px;
+	padding:0 20px 0 20px;
 	font-size:.72em;
 }
 
@@ -425,11 +413,6 @@ span.jp-artist {
 }
 span.jp-artist a{
 	font-size:10px!important;	
-}
-span.jp-like{
-	position:absolute;
-	right:-42px;
-	top:6px;
 }
 
 /* @end */

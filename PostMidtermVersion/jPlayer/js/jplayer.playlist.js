@@ -218,7 +218,7 @@
 			var self = this;
 
 			// Wrap the <li> contents in a <div>
-			var listItem = "<li><div>";
+			var listItem = "<li id='"+media.id+"'><div>";
 
 			// Create remove control
 			listItem += "<a href='javascript:;' class='" + this.options.playlistOptions.removeItemClass + "'>&times;</a>";
@@ -242,11 +242,6 @@
 
 			// The title is given next in the HTML otherwise the float:right on the free media corrupts in IE6/7
 			listItem += "<a href='javascript:;' class='" + this.options.playlistOptions.itemClass + "' tabindex='1'>" + media.title + "</a>" + (media.artist ? " <span class='jp-artist'>" + media.artist + "</span>" : "");
-			listItem += "<span class='jp-like'> <div class='like'> " + 
-                            		"<form class='song-like song-like-" + media.id + "' method='post' action='../../jPlayer/like/toggle_like.php'>" + 
-                            		"<input type='hidden' name='post_id' value='" + media.id + "'/>" + 
-                            		"<button type='submit' name='submit' class='song-like-submit song-like-button-" + media.id + "'></button></form></div></span>";
-			listItem += "</div></li>";
 
 			return listItem;
 		},
@@ -331,6 +326,21 @@
 					this.select(0);
 				}
 			}
+		},
+		// ADDED
+		// Returns position of song if in playlist, otherwise return -1.
+		find: function(song)
+		{
+			//alert("find?");
+			for(key in this.playlist) {
+				if((this.playlist[key])['id'] == song)
+				{
+					//alert(key);
+					return key;
+				}
+			}
+			//alert("-1");
+			return -1;
 		},
 		remove: function(index) {
 			var self = this;
@@ -435,6 +445,45 @@
 			if(this.loop && this.options.playlistOptions.loopOnPrevious || index < this.playlist.length - 1) {
 				this.play(index);
 			}
+		},
+		updateDragDropList: function(old_index, new_index, old_playlist, new_playlist) {
+			var temp_playlist = new Array();
+			var searchkey, i, j;
+			for(i=0; i<old_playlist.length; i++)
+			{
+				for(j=0; j<new_playlist.length; j++)
+				{
+					if(old_playlist[i] == new_playlist[j])
+					{
+						temp_playlist[j] = this.playlist[i]; 
+						break;
+					}
+				/*if(old_playlist[i] != new_playlist[i] && old_playlist[i] != -1)
+				{
+					searchkey = old_playlist[i];
+					for(j=0; j<new_playlist.length; j++)
+					{
+						if(new_playlist[j] == searchkey)
+						{
+							old_playlist[i] = -1;
+
+							new_playlist[j] = -1;
+							if(old_playlist[j] == new_playlist[i] && old_playlist[j] != -1)
+								old_playlist[j] = -1;
+							break;
+						}
+					}
+					temp = this.playlist[j];
+					this.playlist[j] = this.playlist[i];
+					this.playlist[i] = temp;
+				}*/
+			
+				}
+			}
+			this.playlist = temp_playlist.slice(0);
+			this.current=new_index; //Update currently playing song, if it has changed
+			//alert("Now current array index set to"+this.current); 
+			
 		},
 		shuffle: function(shuffled, playNow) {
 			var self = this;
