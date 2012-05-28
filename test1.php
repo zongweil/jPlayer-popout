@@ -8,7 +8,6 @@ include($_SERVER['DOCUMENT_ROOT'] . '/globals/session.php');
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Test Page 1</title>
 <link rel="stylesheet" type="text/css" href="test.css"/>
-<link rel="stylesheet" type="text/css" href="jPlayer/like/like.css"/>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 <script type="text/javascript" src="jPlayer/js/jquery.jplayer.js"></script>
 <script type="text/javascript" src="jPlayer/js/jplayer.playlist.js"></script>

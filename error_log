@@ -1,0 +1,1 @@
+[23-May-2012 13:06:29] PHP Warning:  mysql_fetch_array(): supplied argument is not a valid MySQL result resource in /home/colleg69/public_html/cs130/test2.php on line 148

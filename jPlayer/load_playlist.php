@@ -23,6 +23,9 @@ myPlaylist1 = new jPlayerPlaylist({
 			mp3:"http://cs130.collegeroots.com/listen/<? echo $song_id; ?>/"
 		}
 	], {
+    	playlistOptions: {
+   			enableRemoveControls: true
+  		},
 		swfPath: "../../jPlayer/js/Jplayer.swf",	<? // Location of flash file ?>
 		supplied: "mp3",
 		wmode: "window",

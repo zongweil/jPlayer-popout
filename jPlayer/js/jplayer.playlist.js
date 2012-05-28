@@ -482,7 +482,7 @@
 			}
 			this.playlist = temp_playlist.slice(0);
 			this.current=new_index; //Update currently playing song, if it has changed
-			//alert("Now current array index set to"+this.current);
+			//alert("Now current array index set to"+this.current); 
 			
 		},
 		shuffle: function(shuffled, playNow) {

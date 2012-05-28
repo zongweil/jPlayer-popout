@@ -8,7 +8,6 @@ include($_SERVER['DOCUMENT_ROOT'] . '/globals/session.php');
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Test Page 1</title>
 <link rel="stylesheet" type="text/css" href="jPlayer/skin/blue.monday/jplayer.blue.monday.css"/>
-<link rel="stylesheet" type="text/css" href="jPlayer/like/like.css"/>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 <script type="text/javascript" src="jPlayer/js/jquery.jplayer.js"></script>
 <script type="text/javascript" src="jPlayer/js/jplayer.playlist.js"></script>
@@ -83,38 +82,6 @@ function addSong(type, songID)
 	});
 }
 
-<? // Adds playlist ?>
-function savePlaylist()
-{
-    var pop_playlist = myPlaylist1.playlist;
-    sid_arr = new Array();
-    var i = 0;
-    for (key in pop_playlist) {
-	sid_arr[i] = (pop_playlist[key])['id'];
-	i++;
-
-    }
-    
-    var str_arr=sid_arr.join(" ");
-    alert(str_arr);
-	var title = "thisplaylist";
-
-	//alert(title);
-	$.ajax({
-		type: "POST",
-		url: "jPlayer/save_playlist.php",
-		data: {play_title: title, id_arr: str_arr},
-		success: function(message) {
-			<? // Execute the resulting javascript code; avoid use of eval() ?>
-			var tempFunction = new Function(message);
-			tempFunction();
-			alert("Saved playlist");
-		}
-	});
-
-	//return false;
-}
-
 $(function() {
 	$( "#sortable" ).sortable();
 	$( "#sortable" ).disableSelection();
@@ -184,26 +151,6 @@ function findOldIndexCurrent()
 		</div>
 	</div>
 </div>
-<? if($_SESSION['id']){ ?>
-	<div id="playlist_output" class="output">
-	<form id="pl_form">
-		Title: <input type="text" name="title" />
-		<input type="button" name="save_button" value="Save Playlist" onclick="savePlaylist()" />
-	</form>
-	</div>
-
-	<? // Load saved playlists 
-	$query = "SELECT title FROM user_playlists WHERE user_id = " . $_SESSION['id'];
-	$result = mysql_query($query);
-	if ($result) {
-		print "Playlists:<br>";
-		while ($row = mysql_fetch_row($result)) {
-			$p_title = $row[0];
-			print "<b>" . $p_title . "<b><br>";
-		}
-	}
-	?>
-<? } ?>
 
 </body>
 </html>
