@@ -189,6 +189,35 @@ function findOldIndexCurrent()
 			</ul>
 		</div>
 		<div class="jp-users">
+			<? if($_SESSION['id']){ ?>
+				<div id="playlist_output" class="output">
+				<form id="pl_form">
+					Title: <input type="text" id="playlist_title" />
+					<input type="button" name="save_button" value="Save Playlist" onclick="savePlaylist()" />
+				</form>
+				</div>
+
+				<? // Load saved playlists 
+				$query = "SELECT title FROM user_playlists WHERE user_id = " . $_SESSION['id'];
+				$result = mysql_query($query);?>
+				<form id="loadpl_form">
+				<select id="user_playlists">
+				<?
+				if ($result) {
+					print "Playlists:<br>";
+					while ($row = mysql_fetch_row($result)) {
+						
+						$p_title = $row[0];?>
+						
+						<option> <? echo $p_title ?> </option>
+						<?
+					}
+				}
+				?>
+				</select>
+				<input type="button" name="load_button" value="Load Playlist" onclick="loadPlaylist()" />
+				</form>
+			<? } ?>
 		</div>
 		<div id="nested_2"  class="jp-playlist">
 			<ul id="sortable" onmousedown="findOldIndexCurrent()" ">
@@ -201,35 +230,7 @@ function findOldIndexCurrent()
 		</div>
 	</div>
 </div>
-<? if($_SESSION['id']){ ?>
-	<div id="playlist_output" class="output">
-	<form id="pl_form">
-		Title: <input type="text" id="playlist_title" />
-		<input type="button" name="save_button" value="Save Playlist" onclick="savePlaylist()" />
-	</form>
-	</div>
 
-	<? // Load saved playlists 
-	$query = "SELECT title FROM user_playlists WHERE user_id = " . $_SESSION['id'];
-	$result = mysql_query($query);?>
-	<form id="loadpl_form">
-	<select id="user_playlists">
-	<?
-	if ($result) {
-		print "Playlists:<br>";
-		while ($row = mysql_fetch_row($result)) {
-			
-			$p_title = $row[0];?>
-			
-			<option> <? echo $p_title ?> </option>
-			<?
-		}
-	}
-	?>
-	</select>
-	<input type="button" name="load_button" value="Load Playlist" onclick="loadPlaylist()" />
-	</form>
-<? } ?>
 
 </body>
 </html>
