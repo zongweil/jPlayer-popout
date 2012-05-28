@@ -4,7 +4,7 @@
 .song_table .song .title{font-size:11px;color:#3C577C;width:200px;position:absolute;left:10px;top:5px;cursor:pointer;}
 .song_table .song .artist{font-size:10px;color:#666;width:200px;position:absolute;left:10px;bottom:3px;}
 .song_table .song .queue{width:36px;height:24px;border:none;position:absolute;left:260px;top:5px;cursor:pointer;background-image:url('globals/icons/queue.png');}
-.song_table .song .like{position:absolute;left:300px;top:9px;}
+.song_table .song .add{width:36px;height:24px;border:none;position:absolute;left:310px;top:5px;cursor:pointer;background-image:url('globals/icons/add.png');}
 
 /* Success/failure CSS */
 .output .success, .output .failure {border: 1px solid;margin:10px 0 10px 0;padding:15px 10px 15px 50px; background-repeat: no-repeat;background-position: 10px center;width:310px;}

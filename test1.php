@@ -104,7 +104,17 @@ YUI({}).use("node-base", function (Y) {
                 win.focus();
             }
         }
-
+		
+		
+        // Learned - You can get some attributes immediately after window.open() execution.
+        // You don't have to wait use setTimeout.
+  
+    };
+	var handleAddClick =function (e){
+        // Window object is existing.
+		var node= e.currentTarget;
+		var initialSongID = node.get("parentNode").get("id");
+		//ZONGWEI add code here.... ?
         // Learned - You can get some attributes immediately after window.open() execution.
         // You don't have to wait use setTimeout.
   
@@ -113,6 +123,7 @@ YUI({}).use("node-base", function (Y) {
 	Y.all(".title").on('click', handlePlayClick);
 	
 	Y.all(".queue").on('click', handleQueueClick);
+	Y.all(".add").on('click', handleAddClick);
 });
 
 $().ready(function(){
@@ -153,7 +164,8 @@ function logged_in(formData, jqForm, options) {
         <li id="<? echo $song_id; ?>" class="song">
         	<div class="title" ><? echo $title; ?></div>
             <div class="artist"><? echo $artist; ?></div>
-            <div class="queue"></div>			
+            <div class="queue"></div>	
+            <div class="add"></div>		
         </li>
         <?
 	}
@@ -175,9 +187,7 @@ function logged_in(formData, jqForm, options) {
 <? // User info if user is logged in ?>
 
 <? if($_SESSION['id']){ ?>
-
 	Hello <? echo $_SESSION['email']; ?>!
-    
     <? // Logout form ?>
     <form id="logout_form" method="post" action="../globals/logout.php"><input type="submit" name="submit" value="Logout" /></form></div> 
     
