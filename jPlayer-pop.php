@@ -188,6 +188,8 @@ function findOldIndexCurrent()
 				<li><a href="javascript:;" class="jp-shuffle-off" tabindex="1">shuffle off</a></li>
 			</ul>
 		</div>
+		<div class="jp-users">
+		</div>
 		<div id="nested_2"  class="jp-playlist">
 			<ul id="sortable" onmousedown="findOldIndexCurrent()" ">
 				<li></li>
