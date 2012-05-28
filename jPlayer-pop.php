@@ -65,6 +65,7 @@ function logged_in(formData, jqForm, options) {
 		alert("Log in please!");
 		return false;
 	<? }?>
+	return true;
 }
 
 <? // Adds the song, given the type and songID ?>
@@ -85,49 +86,62 @@ function addSong(type, songID)
 <? // Adds playlist ?>
 function savePlaylist()
 {
-	var title = $("#playlist_title").val();
-    var pop_playlist = myPlaylist1.playlist;
-    sid_arr = new Array();
-    var i = 0;
-    for (key in pop_playlist) {
-	sid_arr[i] = (pop_playlist[key])['id'];
-	i++;
+	//alert("login check");
+	if(logged_in()) {
+	//alert("im logged in");
+		var title = $("#playlist_title").val();
+		var pop_playlist = myPlaylist1.playlist;
+		sid_arr = new Array();
+		var i = 0;
+		for (key in pop_playlist) {
+		sid_arr[i] = (pop_playlist[key])['id'];
+		i++;
 
-    }
-    
-    var str_arr=sid_arr.join(" ");
-    //alert(str_arr);
-
-	//alert(title);
-	$.ajax({
-		type: "POST",
-		url: "jPlayer/save_playlist.php",
-		data: {play_title: title, id_arr: str_arr},
-		success: function(message) {
-			<? // Execute the resulting javascript code; avoid use of eval() ?>
-			var tempFunction = new Function(message);
-			tempFunction();
-			alert("Saved playlist");
 		}
-	});
+		
+		var str_arr=sid_arr.join(" ");
+		//alert(str_arr);
 
+		//alert(title);
+		$.ajax({
+			type: "POST",
+			url: "jPlayer/save_playlist.php",
+			data: {play_title: title, id_arr: str_arr},
+			success: function(message) {
+				<? // Execute the resulting javascript code; avoid use of eval() ?>
+				var tempFunction = new Function(message);
+				tempFunction();
+				alert("Saved playlist");
+			}
+		});
+	}
+	else {
+		//alert("im not logged in");
+	}
 	//return false;
 }
 
 function loadPlaylist()
 {
-	var selTitle = $("#user_playlists option:selected").text();
-	$.ajax({
-		type: "POST",
-		url: "jPlayer/load_selected_playlist.php",
-		data: {sel_title: selTitle},
-		success: function(message) {
-			<? // Execute the resulting javascript code; avoid use of eval() ?>
-			var tempFunction = new Function(message);
-			tempFunction();
-			alert("Load playlist");
-		}
-	});
+	//alert("login check");
+	if(logged_in()) {
+		//alert("im logged in");
+		var selTitle = $("#user_playlists option:selected").text();
+		$.ajax({
+			type: "POST",
+			url: "jPlayer/load_selected_playlist.php",
+			data: {sel_title: selTitle},
+			success: function(message) {
+				<? // Execute the resulting javascript code; avoid use of eval() ?>
+				var tempFunction = new Function(message);
+				tempFunction();
+				alert("Load playlist");
+			}
+		});
+	}
+	else {
+		//alert("im not logged in");
+	}
 }
 
 $(function() {
@@ -189,35 +203,32 @@ function findOldIndexCurrent()
 			</ul>
 		</div>
 		<div class="jp-users">
-			<? if($_SESSION['id']){ ?>
-				<div id="playlist_output" class="output">
-				<form id="pl_form">
-					Title: <input type="text" id="playlist_title" />
-					<input type="button" name="save_button" value="Save Playlist" onclick="savePlaylist()" />
-				</form>
-				</div>
+			<div id="playlist_output" class="output">
+			<form id="pl_form">
+				Title: <input type="text" id="playlist_title" />
+				<input type="button" name="save_button" value="Save Playlist" onclick="savePlaylist()" />
+			</form>
+			</div>
 
-				<? // Load saved playlists 
-				$query = "SELECT title FROM user_playlists WHERE user_id = " . $_SESSION['id'];
-				$result = mysql_query($query);?>
-				<form id="loadpl_form">
-				<select id="user_playlists">
-				<?
-				if ($result) {
-					print "Playlists:<br>";
-					while ($row = mysql_fetch_row($result)) {
-						
-						$p_title = $row[0];?>
-						
-						<option> <? echo $p_title ?> </option>
-						<?
-					}
+			<? // Load saved playlists 
+			$query = "SELECT title FROM user_playlists WHERE user_id = " . $_SESSION['id'];
+			$result = mysql_query($query);?>
+			<form id="loadpl_form">
+			<select id="user_playlists">
+			<?
+			if ($result) {
+				print "Playlists:<br>";
+				while ($row = mysql_fetch_row($result)) {
+					
+					$p_title = $row[0];?>
+					
+					<option> <? echo $p_title ?> </option>
+					<?
 				}
-				?>
-				</select>
-				<input type="button" name="load_button" value="Load Playlist" onclick="loadPlaylist()" />
-				</form>
-			<? } ?>
+			}
+			?>
+			</select>
+			<input type="button" name="load_button" value="Load Playlist" onclick="loadPlaylist()" />
 		</div>
 		<div id="nested_2"  class="jp-playlist">
 			<ul id="sortable" onmousedown="findOldIndexCurrent()" ">
