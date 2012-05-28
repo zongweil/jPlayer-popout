@@ -29,6 +29,7 @@ $query = "SELECT song_id FROM user_playlist_songs WHERE playlist_id = '$playlist
 $result = mysql_query($query);
 if ($result) {
 	//print "Successfully loaded playlist.<br>";?>
+	myPlaylist1.option("autoPlay", true);
 	myPlaylist1.setPlaylist([
 	<?
 	while( $row = mysql_fetch_array($result)){

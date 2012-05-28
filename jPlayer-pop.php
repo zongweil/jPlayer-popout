@@ -120,6 +120,32 @@ function savePlaylist()
 	}
 	//return false;
 }
+function deletePlaylist()
+{
+	//alert("login check");
+	if(logged_in()) {
+	//alert("im logged in");
+		var selTitle = $("#user_playlists option:selected").text();
+		//alert(str_arr);
+
+		alert(selTitle);
+		$.ajax({
+			type: "POST",
+			url: "jPlayer/delete_playlist.php",
+			data: {sel_title: selTitle},
+			success: function(message) {
+				<? // Execute the resulting javascript code; avoid use of eval() ?>
+				var tempFunction = new Function(message);
+				tempFunction();
+				alert("Deleted playlist");
+			}
+		});
+	}
+	else {
+		//alert("im not logged in");
+	}
+	//return false;
+}
 
 function loadPlaylist()
 {
@@ -229,6 +255,7 @@ function findOldIndexCurrent()
 			?>
 			</select>
 			<input type="button" name="load_button" value="Load Playlist" onclick="loadPlaylist()" />
+			<input type="button" name="delete_button" value="Delete Playlist" onclick="deletePlaylist()" />
 		</div>
 		<div id="nested_2"  class="jp-playlist">
 			<ul id="sortable" onmousedown="findOldIndexCurrent()" ">

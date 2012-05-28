@@ -8,10 +8,11 @@ if(isset($_POST['play_title'])){
 }
 if(isset($_POST['id_arr'])){
 	$str_arr = $_POST['id_arr'];
-    $saved_arr = explode( " ", $str_arr);
+    $saved_arr = preg_split('/ /', $str_arr, -1 , PREG_SPLIT_NO_EMPTY); ;
 }
 
 if (!$title) {
+	?>alert("You didn't enter a title. Try again.");<?
 	//print "You didn't enter a title. Try again. <br>";
 	exit(1);
 }
@@ -20,6 +21,11 @@ if (!$title) {
 $id = $_SESSION['id'];
 
 // Add playlist to database
+if(sizeof($saved_arr)==0)
+{
+	?>alert("Cannot save an empty playlist.");<?
+}
+else{
 $query_check = "SELECT * FROM user_playlists WHERE title = '$title'";
 $result_check=mysql_query($query_check);
 $num_results = mysql_num_rows($result_check); 
@@ -46,6 +52,7 @@ $order = 1;
 foreach ($saved_arr as $vals) {
 	mysql_query("INSERT INTO user_playlist_songs VALUES($playlist_id,$vals,$order)");
 	$order++;
+}
 }
 }
 
