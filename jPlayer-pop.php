@@ -7,12 +7,17 @@ include($_SERVER['DOCUMENT_ROOT'] . '/globals/session.php');
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Test Page 1</title>
+<link rel="stylesheet" type="text/css" href="test.css"/>
 <link rel="stylesheet" type="text/css" href="jPlayer/skin/blue.monday/jplayer.blue.monday.css"/>
+<link rel="stylesheet" type="text/css" href="globals/include/js/jqmodal/jqModal.css"/>
+<link rel="stylesheet" type="text/css" href="globals/include/js/asmselect/jquery.asmselect.css"/>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 <script type="text/javascript" src="jPlayer/js/jquery.jplayer.js"></script>
 <script type="text/javascript" src="jPlayer/js/jplayer.playlist.js"></script>
 <script type="text/javascript" src="jPlayer/dragdrop/jquery-ui-1.8.20.custom.min.js"></script>
 <script type="text/javascript" src="globals/include/js/ajax_form/jquery.form.js"></script>
+<script type="text/javascript" src="globals/include/js/jqmodal/jqModal.js"></script>
+<script type="text/javascript" src="globals/include/js/asmselect/jquery.asmselect.js"></script>
 <script type="text/javascript" src="http://yui.yahooapis.com/3.3.0/build/yui/yui-min.js"></script>
 <script type="text/javascript">
 var old_index=0, new_index=0;
@@ -83,26 +88,26 @@ function addSong(type, songID)
 	});
 }
 
-<? // Adds playlist ?>
 function savePlaylist()
 {
-	//alert("login check");
 	if(logged_in()) {
-	//alert("im logged in");
 		var title = $("#playlist_title").val();
+		if(!title)
+		{
+			$('#save_output').html('<div class="failure">Please enter in a title name.</div>');	
+		}
+		<? // Stores all of the current song ID's in an array ?>
 		var pop_playlist = myPlaylist1.playlist;
 		sid_arr = new Array();
 		var i = 0;
 		for (key in pop_playlist) {
-		sid_arr[i] = (pop_playlist[key])['id'];
-		i++;
-
+			sid_arr[i] = (pop_playlist[key])['id'];
+			i++;
 		}
-		
-		var str_arr=sid_arr.join(" ");
-		//alert(str_arr);
 
-		//alert(title);
+		<? // Put it in a string to pass it through AJAX ?>
+		var str_arr=sid_arr.join(" ");
+
 		$.ajax({
 			type: "POST",
 			url: "jPlayer/save_playlist.php",
@@ -111,79 +116,52 @@ function savePlaylist()
 				<? // Execute the resulting javascript code; avoid use of eval() ?>
 				var tempFunction = new Function(message);
 				tempFunction();
-				alert("Saved playlist");
 			}
 		});
 	}
-	else {
-		//alert("im not logged in");
-	}
-	//return false;
-}
-function deletePlaylist()
-{
-	//alert("login check");
-	if(logged_in()) {
-	//alert("im logged in");
-		var selTitle = $("#user_playlists option:selected").text();
-		//alert(str_arr);
-
-		alert(selTitle);
-		$.ajax({
-			type: "POST",
-			url: "jPlayer/delete_playlist.php",
-			data: {sel_title: selTitle},
-			success: function(message) {
-				<? // Execute the resulting javascript code; avoid use of eval() ?>
-				var tempFunction = new Function(message);
-				tempFunction();
-				alert("Deleted playlist");
-			}
-		});
-	}
-	else {
-		//alert("im not logged in");
-	}
-	//return false;
 }
 
 function loadPlaylist()
 {
-	//alert("login check");
 	if(logged_in()) {
-		//alert("im logged in");
-		var selTitle = $("#user_playlists option:selected").text();
+		var playlistID = $("#user_playlists option:selected").val();
 		$.ajax({
 			type: "POST",
 			url: "jPlayer/load_selected_playlist.php",
-			data: {sel_title: selTitle},
+			data: {playlist_id: playlistID},
 			success: function(message) {
 				<? // Execute the resulting javascript code; avoid use of eval() ?>
 				var tempFunction = new Function(message);
 				tempFunction();
-				alert("Load playlist");
+				$('#load_popup').jqmHide();
 			}
 		});
 	}
-	else {
-		//alert("im not logged in");
-	}
+}
+
+<? // Event handler for jqmWindow closing ?>
+function clearSave(hash)
+{
+	hash.w.hide();
+	hash.o.remove();
+	$('#save_popup #playlist_title').val("");
+	$('#save_output').html('');
 }
 
 $(function() {
 	$( "#sortable" ).sortable();
 	$( "#sortable" ).disableSelection();
 	$( "#sortable" ).bind("sortstop", function(event, ui) {
-		
+
 		new_index = $("#nested_2 ul li.jp-playlist-current").index();
 		new_array = $( "#sortable" ).sortable('toArray');
 		myPlaylist1.updateDragDropList(old_index, new_index, old_array, new_array);		
 	});
+	
+	<? // Initialize jqm Windows ?>
+	 $('#save_popup').jqm({onHide: clearSave});
+	 $('#load_popup').jqm();
 });
-
-
-
-
 
 
 function findOldIndexCurrent()
@@ -191,8 +169,6 @@ function findOldIndexCurrent()
 	old_array = $( "#sortable" ).sortable('toArray');
 	old_index = $("#nested_2 ul li.jp-playlist-current").index();	
 }
-
-
 
 </script>
 </head>
@@ -230,34 +206,11 @@ function findOldIndexCurrent()
 		</div>
 		<div class="jp-users">
 			<div id="playlist_output" class="output">
-			<form id="pl_form">
-				Title: <input type="text" id="playlist_title" />
-				<input type="button" name="save_button" value="Save Playlist" onclick="savePlaylist()" />
-			</form>
-			</div>
-
-			<? // Load saved playlists 
-			$query = "SELECT title FROM user_playlists WHERE user_id = " . $_SESSION['id'];
-			$result = mysql_query($query);?>
-			<form id="loadpl_form">
-			<select id="user_playlists">
-			<?
-			if ($result) {
-				print "Playlists:<br>";
-				while ($row = mysql_fetch_row($result)) {
-					
-					$p_title = $row[0];?>
-					
-					<option> <? echo $p_title ?> </option>
-					<?
-				}
-			}
-			?>
-			</select>
-			<input type="button" name="load_button" value="Load Playlist" onclick="loadPlaylist()" />
-			<input type="button" name="delete_button" value="Delete Playlist" onclick="deletePlaylist()" />
+				<input type="button" name="save_button" value="Save Playlist" onclick="if(logged_in()) {$('#save_popup').jqmShow();}" />
+				<input type="button" name="load_button" value="Load Playlist" onclick="if(logged_in()) {$('#load_popup').jqmShow();}" />
+            </div>
 		</div>
-		<div id="nested_2"  class="jp-playlist">
+		<div id="nested_2" class="jp-playlist">
 			<ul id="sortable" onmousedown="findOldIndexCurrent()" ">
 				<li></li>
 			</ul>
@@ -269,6 +222,47 @@ function findOldIndexCurrent()
 	</div>
 </div>
 
+
+<div class="jqmWindow" id="save_popup">
+	<h2>Save Playlist</h2>
+    <hr />
+	<form id="savepl_form">
+		Title: <input type="text" name="playlist_title" id="playlist_title" />
+		<input type="button" name="save_button" value="Save" onclick="savePlaylist()" />
+    </form>
+    
+    <div id="save_output" class="output"></div>
+</div>
+
+<div class="jqmWindow" id="load_popup">
+	<h2>Load Playlist</h2>
+    <hr />
+	<form id="loadpl_form">
+    	<? $playlist_query = mysql_query("SELECT playlist_id,title FROM user_playlists WHERE user_id = " . $_SESSION['id']);
+			if(mysql_num_rows($playlist_query) == 0)
+			{
+				?>
+				You do not have any saved playlists.	
+                <?
+			}
+			else {
+			?>
+		<select id="user_playlists">
+        	<?
+				while($row = mysql_fetch_array($playlist_query))
+				{
+					$playlist_id = $row['playlist_id'];
+					$title = $row['title'];
+					?>
+                    <option value="<? echo $playlist_id; ?>"><? echo $title; ?></option>
+                    <?
+				}
+			?>
+        </select>
+		<input type="button" name="load_button" value="Load" onclick="loadPlaylist()" />
+        <? } ?>
+    </form>
+</div>
 
 </body>
 </html>

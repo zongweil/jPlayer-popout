@@ -3,33 +3,20 @@ include($_SERVER['DOCUMENT_ROOT'] . '/globals/constants.php');
 include($_SERVER['DOCUMENT_ROOT'] . '/globals/session.php');
 ?>
 <?
-if(isset($_POST['sel_title'])){
-	$title = trim($_POST['sel_title']);
+if(isset($_POST['playlist_id'])){
+	$playlist_id = $_POST['playlist_id'];
 }
-if (!$title) {
-	//print "You didn't enter a title. Try again. <br>";
+if (!$playlist_id) {
 	exit(1);
 }
-
-// Escape string for query
-$title = mysql_real_escape_string($title);
-
-// Get Session ID for user_id - needs to actually have a user database later
-$id = $_SESSION['id'];
-
-$playlist_query = mysql_query("SELECT playlist_id FROM user_playlists WHERE user_id='$id' AND title='$title'");
-
-$playlist_result = mysql_fetch_array($playlist_query);
-$playlist_id = $playlist_result['playlist_id'];
-
 
 // Add playlist to database
 $query = "SELECT song_id FROM user_playlist_songs WHERE playlist_id = '$playlist_id' ORDER BY song_order";
 
 $result = mysql_query($query);
 if ($result) {
-	//print "Successfully loaded playlist.<br>";?>
-	myPlaylist1.option("autoPlay", true);
+	?>
+    myPlaylist1.option("autoPlay", true);
 	myPlaylist1.setPlaylist([
 	<?
 	while( $row = mysql_fetch_array($result)){
