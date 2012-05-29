@@ -1,3 +1,23 @@
-*******************************
+******************************************************
 jQuery Popout Player
-*******************************
+v1.0
+Created for UCLA's CS 130
+
+Licensed under the MIT license
+******************************************************
+
+Description: 
+This is a music popout player that interacts with main pages and plays all music externally.  
+This allows for a continuous music experience and user customization.  Users can add songs to
+the playlist, queue them, reorder songs, and save/load their own playlists.
+
+Dependencies:
+Built on top of jQuery 1.7.2 and jPlayer 2.1.0
+
+Features:
+* Play song immediately
+* Queue song for later play
+* Reorder songs within the popout player
+* Save a playlist
+* Add a song to a saved playlist
+* Load a saved playlist
