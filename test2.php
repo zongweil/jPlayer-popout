@@ -124,6 +124,17 @@ YUI({}).use("node-base", function (Y) {
 		$('body').data('add',initialSongID);
 		if(logged_in())
 		{
+			$('#add_popup #addpl_form').html('<img src="globals/icons/ajax-loader.gif" />');
+			$.ajax({
+				type: "POST",
+				url: "jPlayer/get_user_playlists_add.php",
+				success: function(message) {
+					$('#add_popup #addpl_form').html(message);
+					$('#add_select[multiple]').asmSelect({
+						 animate: true
+					});
+				}
+			});
 			$('#add_popup').jqmShow();
 		}
     };
@@ -144,9 +155,6 @@ $().ready(function(){
 			}
      }); 
 	 $('#add_popup').jqm();
-	 $('#add_select[multiple]').asmSelect({
-		 animate: true
-	 });
 });
 
 <? // Function to check if the user is logged in ?>
@@ -233,31 +241,8 @@ function addPlaylist()
 <div class="jqmWindow" id="add_popup">
 	<h2>Add to Playlist</h2>
     <hr />
-    <?
-    $playlist_query = mysql_query("SELECT title, playlist_id FROM user_playlists WHERE user_id = " . $_SESSION['id']);
-	if(mysql_num_rows($playlist_query) == 0)
-	{
-		?>
-		You do not have any saved playlists.
-        <?
-	}
-	else {
-	?>
 	<form id="addpl_form">
-		<select multiple="multiple" id="add_select" title="Select a playlist">
-		<?
-			while ($row = mysql_fetch_array($playlist_query)) {
-				$p_title = $row['title'];
-				$p_id = $row['playlist_id'];
-				?>
-					<option value="<? echo $p_id; ?>"> <? echo $p_title ?> </option>
-				<?
-			}
-		?>
-		</select>
-		<input type="button" name="add_button" value="Add to Playlist" onclick="addPlaylist()" />
     </form>
-    <? } ?>
     
     <div id="add_output" class="output"></div>
 </div>

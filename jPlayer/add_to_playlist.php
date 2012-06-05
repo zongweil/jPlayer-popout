@@ -22,7 +22,7 @@ for($i = 0; $i < count($playlist); $i++)
 	$row = mysql_fetch_array($max_order_query);
 	$song_order = $row['song_order'] + 1;
 
-	mysql_query("INSERT INTO user_playlist_songs (playlist_id, song_id, song_order) VALUES ('$playlist_id','$song_id','$song_order')") or print mysql_error();
+	mysql_query("INSERT INTO user_playlist_songs (playlist_id, song_id, song_order) VALUES ('$playlist_id','$song_id','$song_order')");
 	
 }
 ?>

@@ -74,7 +74,7 @@ $().ready(function(){
 			$('#load_popup #loadpl_form').html('<img src="globals/icons/ajax-loader.gif" />');
 			$.ajax({
 				type: "POST",
-				url: "jPlayer/get_user_playlists.php",
+				url: "jPlayer/get_user_playlists_load.php",
 				success: function(message) {
 					$('#load_popup #loadpl_form').html(message);
 				}
