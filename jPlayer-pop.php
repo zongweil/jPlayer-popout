@@ -48,8 +48,8 @@ YUI().use("node-base", function (Y) {
     });    
 });
 
-<? // When the page is ready, load the playlist into jPlayer using AJAX ?>
 $().ready(function(){
+	<? // When the page is ready, load the playlist into jPlayer using AJAX ?>
 	$.ajax({
 		type: "POST",
 		url: "jPlayer/load_playlist.php",
@@ -58,6 +58,28 @@ $().ready(function(){
 			<? // Execute the resulting javascript code; avoid use of eval() ?>
 			var tempFunction = new Function(message);
 			tempFunction();
+		}
+	});
+	
+	<? // Save button click handler ?>
+	$('#save_button').click(function(){
+		if(logged_in()) {
+			$('#save_popup').jqmShow();
+		}
+	});
+	
+	<? // Load button click handler ?>
+	$('#load_button').click(function() {
+		if(logged_in()) {
+			$('#load_popup #loadpl_form').html('<img src="globals/icons/ajax-loader.gif" />');
+			$.ajax({
+				type: "POST",
+				url: "jPlayer/get_user_playlists.php",
+				success: function(message) {
+					$('#load_popup #loadpl_form').html(message);
+				}
+			});
+			$('#load_popup').jqmShow();
 		}
 	});
 });
@@ -206,8 +228,8 @@ function findOldIndexCurrent()
 		</div>
 		<div class="jp-users">
 			<div id="playlist_output" class="output">
-				<input type="button" name="save_button" value="Save Playlist" onclick="if(logged_in()) {$('#save_popup').jqmShow();}" />
-				<input type="button" name="load_button" value="Load Playlist" onclick="if(logged_in()) {$('#load_popup').jqmShow();}" />
+				<input type="button" id="save_button" name="save_button" value="Save Playlist" />
+				<input type="button" id="load_button" name="load_button" value="Load Playlist" />
             </div>
 		</div>
 		<div id="nested_2" class="jp-playlist">
@@ -238,29 +260,7 @@ function findOldIndexCurrent()
 	<h2>Load Playlist</h2>
     <hr />
 	<form id="loadpl_form">
-    	<? $playlist_query = mysql_query("SELECT playlist_id,title FROM user_playlists WHERE user_id = " . $_SESSION['id']);
-			if(mysql_num_rows($playlist_query) == 0)
-			{
-				?>
-				You do not have any saved playlists.	
-                <?
-			}
-			else {
-			?>
-		<select id="user_playlists">
-        	<?
-				while($row = mysql_fetch_array($playlist_query))
-				{
-					$playlist_id = $row['playlist_id'];
-					$title = $row['title'];
-					?>
-                    <option value="<? echo $playlist_id; ?>"><? echo $title; ?></option>
-                    <?
-				}
-			?>
-        </select>
-		<input type="button" name="load_button" value="Load" onclick="loadPlaylist()" />
-        <? } ?>
+    	
     </form>
 </div>
 
