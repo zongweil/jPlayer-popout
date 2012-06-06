@@ -79,7 +79,7 @@ YUI({}).use("node-base", function (Y) {
                 // Do nothing because child window is open.
                 
                 win.addSong('queue',node.get("parentNode").get("id"));
-            win.focus();
+            self.focus();
             } else {
                 // Open child window again.
                 win = window.open(CHILD_WINDOW_URL, CHILD_WINDOW_NAME, CHILD_WINDOW_ATTRS);
