@@ -4,7 +4,7 @@ include($_SERVER['DOCUMENT_ROOT'] . '/globals/session.php');
 ?>
 <?
 if(isset($_POST['play_title'])){
-	$title = trim($_POST['play_title']);
+	$title = mysql_real_escape_string(trim($_POST['play_title']));
 }
 if(isset($_POST['id_arr'])){
 	$str_arr = $_POST['id_arr'];

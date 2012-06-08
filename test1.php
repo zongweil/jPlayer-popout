@@ -145,6 +145,14 @@ YUI({}).use("node-base", function (Y) {
 	Y.all(".add").on('click', handleAddClick);
 });
 
+<? // Event handler for jqmWindow closing ?>
+function clearAdd(hash)
+{
+	hash.w.hide();
+	hash.o.remove();
+	$('#add_output').html('');
+}
+
 $().ready(function(){
 	$('#login_form').ajaxForm( { 
 	 		target: '#login_output'
@@ -154,7 +162,7 @@ $().ready(function(){
 				location.reload();	
 			}
      }); 
-	 $('#add_popup').jqm();
+	 $('#add_popup').jqm({onHide: clearAdd});
 });
 
 <? // Function to check if the user is logged in ?>
